@@ -48,3 +48,19 @@ def parse_args():
     )
     return parser.parse_args()
 
+def read_urls_from_file(file_path: str):
+    """Чтение URL из текстового файла, игнорируя пустые строки и комментарии (#)."""
+    path = Path(file_path)
+    if not path.exists():
+        raise FileNotFoundError(f"Файл не найден: {file_path}")
+    urls = []
+    with path.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            urls.append(line)
+    if not urls:
+        raise ValueError("В файле нет валидных URL.")
+    return urls
+
