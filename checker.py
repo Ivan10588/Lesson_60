@@ -64,3 +64,52 @@ def read_urls_from_file(file_path: str):
         raise ValueError("В файле нет валидных URL.")
     return urls
 
+def check_website(url: str, timeout: int) -> dict:
+    """
+    Проверка доступности одного сайта.
+
+    Возвращает словарь с полями:
+      - url
+      - status_code
+      - response_time_ms
+      - status ("UP" / "DOWN")
+      - timestamp
+      - error (опционально, сообщение об ошибке)
+    """
+    result = {
+        "url": url,
+        "status_code": None,
+        "response_time_ms": None,
+        "status": "DOWN",
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "error": None,
+    }
+
+    try:
+        response = None
+        for method in (requests.head, requests.get):
+            try:
+                response = method(url, timeout=timeout, allow_redirects=True)
+                break
+            except RequestException:
+                continue
+
+        if response is None:
+            raise RequestException("Не удалось выполнить ни HEAD, ни GET запрос")
+
+        result["status_code"] = response.status_code
+        result["response_time_ms"] = round(response.elapsed.total_seconds() * 1000, 2)
+        if 200 <= response.status_code < 300:
+            result["status"] = "UP"
+        else:
+            result["status"] = "DOWN"
+
+    except Timeout as e:
+        result["error"] = f"Timeout: {e}"
+    except ConnectionError as e:
+        result["error"] = f"ConnectionError: {e}"
+    except RequestException as e:
+        result["error"] = f"RequestException: {e}"
+
+    return result
+
