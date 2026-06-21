@@ -134,3 +134,34 @@ def log_to_console(result: dict):
     if result["error"]:
         print(f"  └─ Ошибка: {result['error']}")
 
+def main():
+    args = parse_args()
+
+    if args.file:
+        urls = read_urls_from_file(args.file)
+    else:
+        urls = args.urls
+
+    if not urls:
+        print("Ошибка: не предоставлено ни одного URL для проверки.")
+        sys.exit(1)
+
+    write_csv_header(args.output)
+
+    for url in urls:
+        result = check_website(url, args.timeout)
+        log_to_console(result)
+
+        with open(args.output, "a", newline="", encoding="utf-8") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([
+                result["url"],
+                result["status_code"],
+                result["response_time_ms"],
+                result["status"],
+                result["timestamp"],
+            ])
+
+
+if __name__ == "__main__":
+    main()
