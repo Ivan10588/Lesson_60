@@ -207,3 +207,28 @@ def run_single_check(args, history: dict) -> dict:
     save_history(args.history_file, history)
     return history
 
+def main():
+    args = parse_args()
+
+    history = load_history(args.history_file)
+
+    if args.interval_minutes == 0:
+        run_single_check(args, history)
+        return
+
+    print(f"Запуск проверки по расписанию: каждые {args.interval_minutes} мин. Ctrl+C для остановки.")
+    while True:
+        try:
+            history = run_single_check(args, history)
+            print(f"Следующая проверка через {args.interval_minutes} минут...\n")
+            time.sleep(args.interval_minutes * 60)
+        except KeyboardInterrupt:
+            print("\nОстановка по запросу пользователя.")
+            break
+        except Exception as e:
+            print(f"Неожиданная ошибка в цикле: {e}")
+            time.sleep(args.interval_minutes * 60)
+
+
+if __name__ == "__main__":
+    main()
