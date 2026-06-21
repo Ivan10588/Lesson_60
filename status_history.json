@@ -1,0 +1,5 @@
+{
+  "https://google.com": "UP",
+  "https://httpbin.org/status/404": "DOWN",
+  "https://nonexistent-domain-xyz-12345.com": "DOWN"
+}
