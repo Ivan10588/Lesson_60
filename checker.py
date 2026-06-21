@@ -123,3 +123,14 @@ def write_csv_header(filepath: str):
                 "URL", "StatusCode", "ResponseTimeMs", "Status", "Timestamp"
             ])
 
+def log_to_console(result: dict):
+    """Вывод результата в консоль в читаемом виде."""
+    status_code = result["status_code"] if result["status_code"] is not None else "N/A"
+    response_time = result["response_time_ms"] if result["response_time_ms"] is not None else "N/A"
+    print(
+        f"{result['url']} - Status Code: {status_code}, "
+        f"Time: {response_time}ms, Overall Status: {result['status']}"
+    )
+    if result["error"]:
+        print(f"  └─ Ошибка: {result['error']}")
+
