@@ -9,3 +9,12 @@
 - Обрабатывает сетевые ошибки и таймауты.
 """
 
+import argparse
+import csv
+import sys
+from datetime import datetime
+from pathlib import Path
+
+import requests
+from requests.exceptions import RequestException, Timeout, ConnectionError
+
