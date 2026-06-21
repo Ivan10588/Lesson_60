@@ -113,3 +113,13 @@ def check_website(url: str, timeout: int) -> dict:
 
     return result
 
+def write_csv_header(filepath: str):
+    """Запись заголовка CSV, если файл ещё не существует."""
+    file_exists = Path(filepath).exists()
+    with open(filepath, "a", newline="", encoding="utf-8") as csvfile:
+        writer = csv.writer(csvfile)
+        if not file_exists:
+            writer.writerow([
+                "URL", "StatusCode", "ResponseTimeMs", "Status", "Timestamp"
+            ])
+
