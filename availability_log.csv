@@ -1,0 +1,7 @@
+URL,StatusCode,ResponseTimeMs,Status,Timestamp
+https://google.com,200,601.49,UP,2026-06-21 15:14:25
+https://httpbin.org/status/404,404,1567.28,DOWN,2026-06-21 15:14:27
+https://nonexistent-domain-xyz-12345.com,,,DOWN,2026-06-21 15:14:29
+https://google.com,200,526.06,UP,2026-06-21 15:17:46
+https://httpbin.org/status/404,503,977.66,DOWN,2026-06-21 15:17:48
+https://nonexistent-domain-xyz-12345.com,,,DOWN,2026-06-21 15:17:49
